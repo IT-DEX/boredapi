@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import Carousel from './Carousel';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [advice, setAdvice] = useState('');
+  
+  const getAdvice = async() => {
+        const response = await fetch('http://www.boredapi.com/api/activity/');
+        const data  = await response.json();
+        setAdvice(data.activity)
+      };
+
+  useEffect(() => { 
+    getAdvice();
+  }, []);
+
+
   return (
+
+    <div>
+   <div>
+      <Carousel/>
+
+    </div>
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>{advice}</p>
+      <div className='button-container'>
+      <button onClick={getAdvice}>Show Me Another Advice</button>
+    </div>
+    </div>
+
     </div>
   );
 }
 
 export default App;
+
